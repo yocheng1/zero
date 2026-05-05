@@ -1,0 +1,25 @@
+.DS_Store
+*.ai
+*.psd
+*.jsx
+*.py
+*.tmp
+*.wav
+
+# 不需要的 output 影片
+output/
+
+# 用不到的設計稿
+c.jpg
+cc.jpg
+e.png
+s.png
+sca.png
+flower.png
+shirt.png
+start from zero.png
+未命名-4.png
+
+# viedo 只保留用到的兩支
+viedo/Comp 2_2.mp4
+viedo/Comp 2_3.mp4
