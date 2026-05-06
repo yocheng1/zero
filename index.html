@@ -880,16 +880,15 @@
   const heroScroll  = document.querySelector('.hero__scroll');
   const heroVideo   = document.querySelector('.hero__video');
 
-  // Start: black bg, overlay full black, text visible, video hidden
-  heroOverlay.style.background = 'rgba(8,8,8,1)';
+  // Start: video playing, overlay 80% black, text visible
+  heroVideo.style.opacity = '1';
+  heroOverlay.style.background = 'rgba(8,8,8,0.8)';
   heroScroll.style.opacity = '0';
 
-  // After 0.5s: fade out text + fade in video simultaneously
+  // After 0.5s: fade out text, then lighten overlay
   setTimeout(() => {
     heroContent.style.transition = 'opacity 0.8s ease';
     heroContent.style.opacity = '0';
-
-    heroVideo.style.opacity = '1'; // triggers transition: opacity 1.2s ease
 
     setTimeout(() => {
       heroOverlay.style.transition = 'background 1.4s ease';
@@ -898,7 +897,7 @@
       heroScroll.style.transition = 'opacity 1s ease';
       heroScroll.style.opacity = '1';
     }, 600);
-  }, 500); // hold 0.5s on black + text
+  }, 500); // hold 0.5s with 80% black + text
 
 
   /* ── AUDIO CONTROL ── */
