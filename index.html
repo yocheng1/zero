@@ -107,6 +107,24 @@
       transition: border-color .2s, opacity .2s !important;
     }
     .nav-pill:hover { opacity: 1 !important; border-color: var(--white) !important; }
+    /* ── AUDIO TOGGLE ──────────────────────── */
+    .audio-btn {
+      position: fixed; bottom: 32px; right: 32px; z-index: 999;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(242,242,240,0.22);
+      border-radius: 50%;
+      background: rgba(8,8,8,0.55);
+      backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      cursor: none;
+      transition: border-color .2s, background .2s;
+    }
+    .audio-btn:hover { border-color: rgba(242,242,240,0.6); background: rgba(8,8,8,0.8); }
+    .audio-btn svg { width: 16px; height: 16px; }
+    .audio-btn .icon-muted { display: none; }
+    .audio-btn.muted .icon-playing { display: none; }
+    .audio-btn.muted .icon-muted { display: block; }
+
 
     /* ── HERO ──────────────────────────────── */
     .hero {
@@ -121,6 +139,7 @@
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover; object-position: center;
+      opacity: 0; transition: opacity 1.2s ease;
       z-index: 0;
     }
 
@@ -855,28 +874,74 @@
     });
   }, { passive: true });
 
-  /* ── HERO TEXT: appear → hold → fade out, video takes over ── */
+  /* ── HERO TEXT: black screen → text 0.5s → fade out → video in ── */
   const heroContent = document.querySelector('.hero__content');
   const heroOverlay = document.querySelector('.hero__overlay');
   const heroScroll  = document.querySelector('.hero__scroll');
+  const heroVideo   = document.querySelector('.hero__video');
 
-  // hide scroll hint until text disappears
+  // Start: black bg, overlay full black, text visible, video hidden
+  heroOverlay.style.background = 'rgba(8,8,8,1)';
   heroScroll.style.opacity = '0';
 
+  // After 0.5s: fade out text + fade in video simultaneously
   setTimeout(() => {
-    // fade out text
-    heroContent.style.transition = 'opacity 1.1s ease';
+    heroContent.style.transition = 'opacity 0.8s ease';
     heroContent.style.opacity = '0';
-    // lighten overlay so video breathes
+
+    heroVideo.style.opacity = '1'; // triggers transition: opacity 1.2s ease
+
     setTimeout(() => {
-      heroOverlay.style.transition = 'background 1.2s ease';
+      heroOverlay.style.transition = 'background 1.4s ease';
       heroOverlay.style.background =
-        'linear-gradient(to bottom, rgba(8,8,8,0.08) 0%, rgba(8,8,8,0) 40%, rgba(8,8,8,0.45) 72%, rgba(8,8,8,0.95) 100%)';
-      // show scroll hint
+        'linear-gradient(to bottom, rgba(8,8,8,0.22) 0%, rgba(8,8,8,0.10) 35%, rgba(8,8,8,0.52) 70%, rgba(8,8,8,0.94) 100%)';
       heroScroll.style.transition = 'opacity 1s ease';
       heroScroll.style.opacity = '1';
-    }, 500);
-  }, 2600); // hold 2.6s after page load
+    }, 600);
+  }, 500); // hold 0.5s on black + text
+
+
+  /* ── AUDIO CONTROL ── */
+  const bgAudio = document.getElementById('bg-audio');
+  const audioBtn = document.getElementById('audio-btn');
+  let audioStarted = false;
+
+  bgAudio.volume = 0;
+
+  function startAudio() {
+    if (audioStarted) return;
+    audioStarted = true;
+    bgAudio.play().then(() => {
+      // fade in volume over 3s
+      let v = 0;
+      const fade = setInterval(() => {
+        v = Math.min(v + 0.01, 0.35);
+        bgAudio.volume = v;
+        if (v >= 0.35) clearInterval(fade);
+      }, 100);
+    }).catch(() => {});
+  }
+
+  // Start on first user interaction
+  document.addEventListener('click', startAudio, { once: true });
+  document.addEventListener('touchstart', startAudio, { once: true });
+  document.addEventListener('scroll', startAudio, { once: true });
+
+  audioBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!audioStarted) {
+      startAudio();
+      audioBtn.classList.remove('muted');
+      return;
+    }
+    if (bgAudio.paused) {
+      bgAudio.play();
+      audioBtn.classList.remove('muted');
+    } else {
+      bgAudio.pause();
+      audioBtn.classList.add('muted');
+    }
+  });
 
   /* ── INTERSECTION OBSERVER: reveal + manifesto lines ── */
   const io = new IntersectionObserver(entries => {
@@ -908,6 +973,26 @@
 
   schedIO.observe(runList);
 </script>
+
+
+<!-- AUDIO -->
+<audio id="bg-audio" loop>
+  <source src="audio/bg.mp3" type="audio/mpeg">
+</audio>
+<button class="audio-btn muted" id="audio-btn" aria-label="Toggle music">
+  <!-- playing icon: speaker with waves -->
+  <svg class="icon-playing" viewBox="0 0 24 24" fill="none" stroke="rgba(242,242,240,0.8)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M11 5L6 9H3v6h3l5 4V5z"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+  </svg>
+  <!-- muted icon: speaker with x -->
+  <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="rgba(242,242,240,0.4)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M11 5L6 9H3v6h3l5 4V5z"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>
+</button>
 
 </body>
 </html>
