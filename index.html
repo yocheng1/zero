@@ -363,11 +363,7 @@
     }
     .run-row:hover { background: rgba(242,242,240,0.04); }
     .run-row:hover::before { width: 1.5px; }
-    .run-row { animation: rowIn .5s ease both; }
-    @keyframes rowIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+
 
     /* Cells */
     .r-badge {
@@ -446,31 +442,36 @@
     /* ── PHOTO STRIP ─────────────────────── */
     .strip {
       position: relative;
-      height: 56vh; min-height: 380px;
+      height: 100vh;
       overflow: hidden;
     }
     .strip img {
       width: 100%; height: 100%;
-      object-fit: cover; object-position: center 42%;
-      transition: transform 1s ease;
+      object-fit: cover; object-position: center 30%;
+      transition: transform 8s ease;
     }
-    .strip:hover img { transform: scale(1.03); }
+    .strip:hover img { transform: scale(1.04); }
     .strip__grad {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(8,8,8,0) 30%, rgba(8,8,8,0.85) 100%);
+      background: linear-gradient(to bottom,
+        rgba(8,8,8,0.18) 0%,
+        rgba(8,8,8,0) 30%,
+        rgba(8,8,8,0) 60%,
+        rgba(8,8,8,0.72) 100%);
     }
     .strip__label {
-      position: absolute; bottom: 36px; left: 44px;
+      position: absolute; bottom: 52px; left: 52px;
       z-index: 2;
     }
     .strip__label h3 {
-      font-size: clamp(36px, 6vw, 96px);
-      font-weight: 700; letter-spacing: -0.04em;
-      text-transform: uppercase; line-height: 0.88;
+      font-size: clamp(28px, 4vw, 64px);
+      font-weight: 300; letter-spacing: 0.22em;
+      text-transform: uppercase; line-height: 1.1;
+      color: rgba(242,242,240,0.72);
     }
     .strip__label p {
-      font-size: 11px; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--dim); margin-top: 10px;
+      font-size: 9.5px; letter-spacing: 0.28em;
+      text-transform: uppercase; color: rgba(242,242,240,0.35); margin-top: 8px;
     }
 
     /* ── AGAIN (cut-half) ────────────────── */
@@ -801,11 +802,11 @@
 
 <!-- PHOTO STRIP -->
 <div class="strip">
-  <img src="photo/bcf302b80b218e85086f4b4fb04d3bf1.jpg" alt="ZERO Crew Taipei">
+  <img src="photo/fa6b6768c3a1a60757135aaa6828ff02.jpg" alt="ZERO Crew Taipei">
   <div class="strip__grad"></div>
   <div class="strip__label">
-    <h3>Run the<br>City.</h3>
-    <p>Taipei · Weekly · All paces</p>
+    <h3>ZERO<br>STATE.</h3>
+    <p>Taipei Running Crew · Est. 2026</p>
   </div>
 </div>
 
@@ -976,6 +977,7 @@
 
 <!-- AUDIO -->
 <audio id="bg-audio" loop>
+  <source src="https://www.scottbuckley.com.au/library/wp-content/uploads/2023/01/TheLongDark.mp3" type="audio/mpeg">
   <source src="audio/bg.mp3" type="audio/mpeg">
 </audio>
 <button class="audio-btn muted" id="audio-btn" aria-label="Toggle music">
