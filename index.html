@@ -286,6 +286,45 @@
     .m-line.dim span { color: var(--dim); font-size: clamp(13px, 1.5vw, 22px); }
     .m-line.in span { transform: translateY(0); }
 
+
+    /* ── PHOTO GRID ─────────────────────────── */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 52vh 48vh;
+      gap: 2px;
+      background: var(--black);
+    }
+    .pg-cell {
+      overflow: hidden;
+      position: relative;
+    }
+    .pg-cell img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      transition: transform 1.2s cubic-bezier(.16,1,.3,1);
+      filter: brightness(0.88) contrast(1.05);
+    }
+    .pg-cell:hover img { transform: scale(1.06); filter: brightness(0.72) contrast(1.08); }
+    /* grid placement */
+    .pg-a { grid-column: 1; grid-row: 1 / 3; } /* tall left */
+    .pg-b { grid-column: 2; grid-row: 1; }
+    .pg-c { grid-column: 3; grid-row: 1; }
+    .pg-d { grid-column: 2; grid-row: 2; }
+    .pg-e { grid-column: 3; grid-row: 2; }
+
+    @media (max-width: 768px) {
+      .photo-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 40vw 40vw 60vw;
+      }
+      .pg-a { grid-column: 1 / 3; grid-row: 1; }
+      .pg-b { grid-column: 1; grid-row: 2; }
+      .pg-c { grid-column: 2; grid-row: 2; }
+      .pg-d { grid-column: 1; grid-row: 3; }
+      .pg-e { grid-column: 2; grid-row: 3; }
+    }
+
     /* ── SCHEDULE ──────────────────────────── */
     .schedule {
       padding: 96px 44px 108px;
@@ -690,6 +729,25 @@
   <div class="m-line dim"><span>這裡沒有標準答案。</span></div>
   <div class="m-line dim"><span>只有一群人，在城市裡一起找到屬於自己的節奏。</span></div>
 </section>
+
+<!-- PHOTO GRID -->
+<div class="photo-grid">
+  <div class="pg-cell pg-a">
+    <img src="https://images.unsplash.com/photo-1634085398114-5091e0d9ed9e?w=1200&q=85" alt="runner silhouette city">
+  </div>
+  <div class="pg-cell pg-b">
+    <img src="https://images.unsplash.com/photo-1767794640954-de3a95512394?w=900&q=85" alt="night street run">
+  </div>
+  <div class="pg-cell pg-c">
+    <img src="https://images.unsplash.com/photo-1619408985784-fee9f291eb02?w=900&q=85" alt="urban stairs runner">
+  </div>
+  <div class="pg-cell pg-d">
+    <img src="https://images.unsplash.com/photo-1760706112663-1b3932597980?w=900&q=85" alt="city park night run">
+  </div>
+  <div class="pg-cell pg-e">
+    <img src="https://images.unsplash.com/photo-1775653617434-e5f3d0bf6d8f?w=900&q=85" alt="motion blur runners">
+  </div>
+</div>
 
 <!-- SCHEDULE -->
 <section class="schedule" id="schedule">
